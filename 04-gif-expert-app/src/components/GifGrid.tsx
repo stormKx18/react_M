@@ -1,20 +1,29 @@
-import { useEffect } from "react";
-import { getGifs } from "../helpers/getGifs";
+import type { GifResponse } from "../interfaces/gif-response";
+import { GifItem } from "./GifItem";
+import { useFetchGifs } from "../hooks/useFetchGifs";
 
 interface Props {
   category: string;
 }
 
 export const GifGrid = ({ category }: Props) => {
-  useEffect(() => {
-    getGifs(category);
-  });
+  const { images, isLoading } = useFetchGifs(category);
+
+  console.log({ isLoading });
+
+  if (isLoading) {
+    return <div>Loading</div>;
+  }
 
   return (
     <>
       <div>
         <h3>{category}</h3>
-        <p>{category}</p>
+        <div className="card-grid">
+          {images.map((image: GifResponse) => (
+            <GifItem key={image.id} {...image} />
+          ))}
+        </div>
       </div>
     </>
   );

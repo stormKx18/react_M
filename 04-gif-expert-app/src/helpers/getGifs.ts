@@ -1,3 +1,4 @@
+import type { GifResponse } from "../interfaces/gif-response";
 import type { Datum } from "../interfaces/search-api-response";
 
 export const getGifs = async (category: string) => {
@@ -6,13 +7,13 @@ export const getGifs = async (category: string) => {
   const resp = await fetch(url);
   const { data } = await resp.json();
 
-  const gifs = data.map((img: Datum) => ({
-    id: img.id,
-    title: img.title,
-    url: img.images.downsized_medium.url,
-  }));
-
-  console.log(gifs);
+  const gifs = data.map(
+    (img: Datum): GifResponse => ({
+      id: img.id,
+      title: img.title,
+      url: img.images.downsized_medium.url,
+    })
+  );
 
   return gifs;
 };
